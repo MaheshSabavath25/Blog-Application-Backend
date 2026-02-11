@@ -152,13 +152,21 @@ public class PostController {
 
         if (!file.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return; // ❌ STOP HERE (NO CRASH)
+            return;
         }
 
-        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        // 🔥 Detect correct content type automatically
+        String contentType = Files.probeContentType(file.toPath());
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        response.setContentType(contentType);
+
         InputStream is = new FileInputStream(file);
         StreamUtils.copy(is, response.getOutputStream());
     }
+
     
     @GetMapping("/paged")
     public ResponseEntity<Page<PostDto>> getPostsWithPagination(
