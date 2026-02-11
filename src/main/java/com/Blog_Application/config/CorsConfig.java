@@ -19,7 +19,7 @@ public class CorsConfig {
 
         configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
-                "https://*.onrender.com"
+                "https://blog-application-frontend-imsu.onrender.com"
         ));
 
         configuration.setAllowedMethods(List.of(
