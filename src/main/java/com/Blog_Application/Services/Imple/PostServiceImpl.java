@@ -2,19 +2,16 @@ package com.Blog_Application.Services.Imple;
 
 
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -65,8 +62,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Value("${project.image}")
-    private String imagePath;
+   
 
     /* ================= HASHTAG ================= */
 
@@ -280,29 +276,9 @@ public class PostServiceImpl implements PostService {
 
     /* ================= IMAGE UPLOAD ================= */
 
-    @Override
-    public PostDto uploadPostImage(Integer postId, MultipartFile image) throws IOException {
+    
 
-        Post post = postRepo.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
-
-        File folder = new File(imagePath);
-        if (!folder.exists()) folder.mkdirs();
-
-        String fileName = image.getOriginalFilename();
-        String fullPath = imagePath + File.separator + fileName;
-
-        Files.copy(image.getInputStream(), Paths.get(fullPath),
-                StandardCopyOption.REPLACE_EXISTING);
-
-        post.setImageName(fileName);
-        return mapToDto(postRepo.save(post));
-    }
-
-    @Override
-    public PostDto uploadImage(Integer postId, MultipartFile image, String imagePath) throws IOException {
-        return uploadPostImage(postId, image);
-    }
+   
 
     
 
@@ -339,6 +315,28 @@ public class PostServiceImpl implements PostService {
                     return categoryRepo.save(category);
                 });
     }
+
+    @Override
+    public PostDto uploadPostImage(Integer postId, MultipartFile image) throws IOException {
+
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        var uploadResult = cloudinary.uploader().upload(
+                image.getBytes(),
+                Map.of("folder", "blog_posts")
+        );
+
+        String imageUrl = uploadResult.get("secure_url").toString();
+
+        post.setImageName(imageUrl);
+
+        return mapToDto(postRepo.save(post));
+    }
+
+	
+
+
 
     
 

@@ -36,7 +36,7 @@ public interface PostService {
     
     List<PostDto> getPostsByEmail(String email);
 
-	PostDto uploadImage(Integer postId, MultipartFile image, String imagePath) throws IOException;
+	
 
 	PostDto uploadPostImage(Integer postId, MultipartFile image) throws IOException;
 
