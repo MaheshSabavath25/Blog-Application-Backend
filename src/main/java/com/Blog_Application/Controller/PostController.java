@@ -1,31 +1,19 @@
 package com.Blog_Application.Controller;
 
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.Blog_Application.BlogServices.FileService;
 import com.Blog_Application.BlogServices.PostService;
 import com.Blog_Application.Payload.PostDto;
-
-
-import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -34,8 +22,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @Value("${project.image}")
-    private String imagePath;
+   
 
     // ✅ CREATE POST
     @GetMapping("/category/{categoryId}")
@@ -142,30 +129,7 @@ public class PostController {
     }
 
     // ✅ DOWNLOAD IMAGE
-    @GetMapping("/image/{imageName}")
-    public void downloadImage(
-            @PathVariable String imageName,
-            HttpServletResponse response) throws IOException {
-
-        String fullPath = imagePath + File.separator + imageName;
-        File file = new File(fullPath);
-
-        if (!file.exists()) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        // 🔥 Detect correct content type automatically
-        String contentType = Files.probeContentType(file.toPath());
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        response.setContentType(contentType);
-
-        InputStream is = new FileInputStream(file);
-        StreamUtils.copy(is, response.getOutputStream());
-    }
+    
 
     
     @GetMapping("/paged")

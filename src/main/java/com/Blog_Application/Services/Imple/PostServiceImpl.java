@@ -1,6 +1,7 @@
 package com.Blog_Application.Services.Imple;
 
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +33,8 @@ import com.Blog_Application.Repository.HashtagRepo;
 import com.Blog_Application.Repository.LikeRepository;
 import com.Blog_Application.Repository.PostRepo;
 import com.Blog_Application.Repositorys.UserRepository;
+import com.cloudinary.Cloudinary;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @Service
@@ -44,6 +46,8 @@ public class PostServiceImpl implements PostService {
    
 
     
+    @Autowired
+    private Cloudinary cloudinary;
 
 
     @Autowired
