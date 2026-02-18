@@ -27,7 +27,15 @@ public class PostDto {
     
     private boolean liked;
     
-    
+    private String videoUrl;
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
 
     public boolean isLiked() {
 		return liked;

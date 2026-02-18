@@ -104,6 +104,7 @@ public class PostServiceImpl implements PostService {
         PostDto dto = modelMapper.map(post, PostDto.class);
         dto.setHashtags(mapHashtagsToDto(post));
         dto.setLikeCount(likeRepo.countByPost(post));
+        dto.setVideoUrl(post.getVideoUrl());  
         return dto;
     }
 
