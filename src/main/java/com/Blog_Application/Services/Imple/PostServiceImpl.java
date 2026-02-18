@@ -346,9 +346,12 @@ public class PostServiceImpl implements PostService {
                 video.getBytes(),
                 ObjectUtils.asMap(
                         "resource_type", "video",
-                        "folder", "blog_posts"
+                        "folder", "blog_posts",
+                        "format", "mp4",
+                        "video_codec", "h264"
                 )
         );
+
 
         String videoUrl = uploadResult.get("secure_url").toString();
 
