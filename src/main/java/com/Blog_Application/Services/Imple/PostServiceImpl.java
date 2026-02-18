@@ -31,6 +31,7 @@ import com.Blog_Application.Repository.LikeRepository;
 import com.Blog_Application.Repository.PostRepo;
 import com.Blog_Application.Repositorys.UserRepository;
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -333,6 +334,31 @@ public class PostServiceImpl implements PostService {
 
         return mapToDto(postRepo.save(post));
     }
+
+    @Override
+    public PostDto uploadPostVideo(Integer postId, MultipartFile video) throws IOException {
+
+        Post post = postRepo.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Map uploadResult = cloudinary.uploader().upload(
+                video.getBytes(),
+                ObjectUtils.asMap(
+                        "resource_type", "video",
+                        "folder", "blog_posts"
+                )
+        );
+
+        String videoUrl = uploadResult.get("secure_url").toString();
+
+        post.setVideoUrl(videoUrl);
+
+        Post savedPost = postRepo.save(post);
+
+        return mapToDto(savedPost);
+    }
+
+
 
 	
 

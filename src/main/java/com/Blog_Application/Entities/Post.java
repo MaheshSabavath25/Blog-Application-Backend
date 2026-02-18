@@ -51,6 +51,10 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+    
+    
+    @Column(name = "video_url")
+    private String videoUrl;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -92,6 +96,14 @@ public class Post {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	public String getTitle() {

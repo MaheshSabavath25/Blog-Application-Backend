@@ -50,6 +50,9 @@ public interface PostService {
 
 	List<PostDto> getAllPosts(String email);
 
+	PostDto uploadPostVideo(Integer postId, MultipartFile video) throws IOException;
+
+
 	
 
 }

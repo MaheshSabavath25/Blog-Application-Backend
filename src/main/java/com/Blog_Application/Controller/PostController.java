@@ -128,7 +128,19 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    // ✅ DOWNLOAD IMAGE
+ // ✅ UPLOAD VIDEO
+    @PostMapping("/{postId}/video")
+    public ResponseEntity<PostDto> uploadVideo(
+            @PathVariable Integer postId,
+            @RequestParam("video") MultipartFile video)
+            throws IOException {
+
+        PostDto post =
+                postService.uploadPostVideo(postId, video);
+
+        return ResponseEntity.ok(post);
+    }
+
     
 
     
