@@ -58,12 +58,19 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(int categoryId) {
+
         Category category = categoryRepo.findById(categoryId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Category", "id", categoryId));
 
+        // If category has posts → do not delete
+        if (!category.getPosts().isEmpty()) {
+            throw new RuntimeException("Cannot delete category because it has posts");
+        }
+
         categoryRepo.delete(category);
     }
+
 
     private CategoryDto mapToDto(Category category) {
         CategoryDto dto = new CategoryDto();

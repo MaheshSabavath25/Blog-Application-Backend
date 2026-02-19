@@ -55,12 +55,15 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<JwtAuthResponse> deleteCategory(
-            @PathVariable int categoryId) {
-
+    public ResponseEntity<?> deleteCategory(@PathVariable int categoryId) {
         categoryService.deleteCategory(categoryId);
-        return ResponseEntity.ok(
-                new JwtAuthResponse()
-        );
+        return ResponseEntity.ok("Category deleted successfully");
     }
+
+
+    
+    
+    
+    
+    
 }
